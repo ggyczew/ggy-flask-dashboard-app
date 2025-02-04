@@ -1,0 +1,34 @@
+body {
+    min-height: 100vh;
+    padding-top: 4.5rem;
+    background-color: #e1e1e1;
+  }
+  
+  .alert {
+    margin: auto; display: table;
+  }
+  
+  td.details-control {
+    text-align:center;
+    color:forestgreen;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+    text-align:center; 
+    color:red;
+  }
+  
+  
+  .card-header>.card-tools {
+    float: right;
+  }
+  
+  /* cancel default style to show <button> same as standat <a> link */
+  .btn-tool {
+      background-color: transparent;
+      border: 0;
+      margin: 0;
+      padding: 0;
+      vertical-align: top;
+  }
+  

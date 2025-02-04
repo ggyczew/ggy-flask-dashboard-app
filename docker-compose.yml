@@ -1,0 +1,71 @@
+name: ggy-flask-dashboard-app
+services:
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=rpt
+  
+  redis:
+    image: redis
+    restart: always
+  
+  oracle:
+    image: oracleinanutshell/oracle-xe-11g
+    restart: always
+    ports:
+      - 1521:1521  # Oracle listener port
+      # - 8080:8080  # Oracle Application Express (APEX) port (optional)
+    # networks: 
+    #   - ggy-dash-app
+    environment:
+      ORACLE_ALLOW_REMOTE: "true"  # Allow remote connections
+      ORACLE_PASSWORD: oracle  # Password for SYS and SYSTEM users
+    volumes:
+      - oracle_data:/u01/app/oracle  # Persist data between restarts
+  
+  web:
+    build: .
+    image: ggy-flask-dashboard-app
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      ORACLE_HOST: oracle  # Hostname of the Oracle server
+      ORACLE_PORT: 1521  # Oracle listener port
+      ORACLE_USER: system  # Default user
+      ORACLE_PASSWORD: oracle  # Default password
+      ORACLE_SID: xe  # Oracle SID for XE
+    depends_on:
+      - postgres
+      - oracle
+    # volumes:
+    #   - reports_data:/app/reports/
+    command: gunicorn -b :5000 run:app
+
+  rq-worker:
+    image: ggy-flask-dashboard-app
+    restart: always
+    depends_on:
+      - redis
+    command: rq worker --name ggy-flask-dashboard-app-tasks --url redis://redis:6379/0
+
+  rq-dashboard:
+    image: ggy-flask-dashboard-app
+    restart: always
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+    command: rq-dashboard --port 5555 --redis-url redis://redis:6379/0
+  
+ 
+volumes:
+  postgres_data:
+  oracle_data:
+  # reports_data:
+

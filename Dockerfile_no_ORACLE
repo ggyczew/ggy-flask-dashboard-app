@@ -1,0 +1,16 @@
+FROM python:3.12-bullseye
+
+WORKDIR /app
+
+RUN adduser --system --group --no-create-home app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN chown -R app:app /app
+
+USER app
+
+CMD ["init.sh"]

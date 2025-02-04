@@ -1,0 +1,8 @@
+{% extends 'login.html' %}
+
+{% block content %}
+<img class="mb-4" src="{{ url_for('static', filename='img/bootstrap-logo.svg') }}" alt="" width="72" height="57">
+<h1 class="h3 mb-3 fw-normal">You have been<br>Logged Out</h1>
+<a class="btn btn-primary btn-sm" role="button" href="/login">Login Again</a>
+
+{% endblock %}
