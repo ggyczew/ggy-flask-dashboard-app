@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import logging
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
@@ -31,9 +32,7 @@ class Config(object):
     SECURITY_SEND_REGISTER_EMAIL = False
     SECURITY_POST_LOGOUT_VIEW = "/loggedout"
 
-    SCHEDULE_TASK_DAYS_AHEAD = 2
-    SCHEDULE_TASK_UPDATE_INTERVAL = 300
-    SCHEDULE_TASK_RUN_INTERVAL = 600
+    SCHEDULER_API_ENABLED = True
 
     RQ_REDIS_HOST = os.environ.get("RQ_REDIS_HOST")
     RQ_REDIS_PORT = os.environ.get("RQ_REDIS_PORT")
@@ -60,6 +59,7 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    LOGGING_LEVEL = logging.DEBUG
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.sqlite")
     SQLALCHEMY_BINDS = {
         "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),
@@ -70,6 +70,7 @@ class DevelopmentConfig(Config):
 class DevelopmentFDTConfig(Config):
     SHOW_FLASK_DEBUG_TOOLBAR = True
     DEBUG = True
+    LOGGING_LEVEL = logging.DEBUG
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.sqlite")
     SQLALCHEMY_BINDS = {
         "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),

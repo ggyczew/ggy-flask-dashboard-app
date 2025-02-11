@@ -52,7 +52,7 @@ services:
     restart: always
     depends_on:
       - redis
-    command: rq worker --name ggy-flask-dashboard-app-tasks --url redis://redis:6379/0
+    command: rq worker app-tasks --url redis://redis:6379/0
 
   rq-dashboard:
     image: ggy-flask-dashboard-app
