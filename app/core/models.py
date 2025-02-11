@@ -26,6 +26,3 @@ class User(db.Model, fsqla.FsUserMixin):
     last_login_ip = db.Column(db.String(100))
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
-    # roles = db.relationship(
-    #     "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
-    # )

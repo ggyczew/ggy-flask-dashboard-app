@@ -1,6 +1,6 @@
 from . import bp
 from flask import render_template
-from flask_security import current_user, auth_required, login_required, roles_accepted
+from flask_security import current_user, auth_required, roles_accepted
 from . import models
 
 
@@ -27,7 +27,7 @@ def profile_detail():
 
 @bp.route("/profile/update")
 @auth_required()
-@roles_accepted("admin", "staff", "user")
+# @roles_accepted("admin", "staff", "user")
 def profile_update():
     profile = current_user
     return render_template(

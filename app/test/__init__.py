@@ -1,4 +1,5 @@
 from flask import Blueprint
+from . import scripts
 
 bp = Blueprint(
     "test",
