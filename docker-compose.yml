@@ -45,7 +45,7 @@ services:
       - oracle
     # volumes:
     #   - reports_data:/app/reports/
-    command: gunicorn -b :5000 run:app
+    command: bash -c "flask commands init_users && gunicorn -b :5000 run:app"
 
   rq-worker:
     image: ggy-flask-dashboard-app

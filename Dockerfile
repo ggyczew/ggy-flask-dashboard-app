@@ -20,4 +20,4 @@ RUN chown -R app:app /app
 
 USER app
 
-CMD ["init.sh"]
+CMD [""]

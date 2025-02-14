@@ -99,4 +99,6 @@ def create_app(config_name):
         # Define the custom commands
         configure_commands(app)
 
+        db.create_all(bind_key=[None])
+
     return app
