@@ -10,12 +10,16 @@ class Config(object):
 
     DEBUG = os.environ.get("DEBUG")
 
-    ADMINS = frozenset(["admin@localhost"])
+    ADMINS = frozenset(["admin@me.com"])
     SECRET_KEY = os.environ.get("SECRET_KEY") or "super-secret-key"
     ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = os.environ.get("CSRF_SESSION_KEY")
+
+    # have session and remember cookie be samesite (flask/flask_login)
+    REMEMBER_COOKIE_SAMESITE = "strict"
+    SESSION_COOKIE_SAMESITE = "strict"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # As of Flask-SQLAlchemy 2.4.0 it is easy to pass in options directly to the
@@ -39,12 +43,6 @@ class Config(object):
     RQ_DASHBOARD_REDIS_URL = f"redis://{RQ_REDIS_HOST}:{RQ_REDIS_PORT}"
 
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    #  !!! TODO Duplicate !!! see SQLALCHEMY_BINDS
-    DATASOURCE_DATABASE_URI = "sqlite:///" + os.path.join(
-        basedir, "data", "data.sqlite"
-    )
-
-    REPORTS_DIR = os.path.join(basedir, "reports")
 
 
 class ProductionConfig(Config):
@@ -73,7 +71,7 @@ class DevelopmentFDTConfig(Config):
     LOGGING_LEVEL = logging.DEBUG
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.sqlite")
     SQLALCHEMY_BINDS = {
-        "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),
+        "datasource": "sqlite:///" + os.path.join(basedir, "data.sqlite"),
         "oracle": os.getenv("ORACLE_DATABASE_URL"),
     }
 

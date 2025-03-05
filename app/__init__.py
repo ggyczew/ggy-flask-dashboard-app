@@ -38,8 +38,6 @@ def register_extensions(app):
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security = Security(app, user_datastore)
 
-    # menu.init_app(app)
-
     if app.config.get("SHOW_FLASK_DEBUG_TOOLBAR", False):
         toolbar.init_app(app)
 
@@ -47,8 +45,8 @@ def register_extensions(app):
 def register_blueprints(app):
     from importlib import import_module
 
-    for module_name in ["core", "test"]:
-        module = import_module("app.{}.routes".format(module_name))
+    for module_name in ["core", "dashboard", "test"]:
+        module = import_module(f"app.{module_name}.routes")
         app.register_blueprint(module.bp)
 
 
@@ -99,5 +97,7 @@ def create_app(config_name):
 
         # Define the custom commands
         configure_commands(app)
+
+        db.create_all(bind_key=[None])
 
     return app

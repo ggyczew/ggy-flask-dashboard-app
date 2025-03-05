@@ -1,4 +1,5 @@
 from flask import Blueprint
+from . import scripts
 
 bp = Blueprint(
     "test",
@@ -7,5 +8,3 @@ bp = Blueprint(
     template_folder="templates",
     static_folder="static",
 )
-
-from . import tasks
