@@ -10,9 +10,9 @@ def index():
 
     context = {
         'kpis': [
-            services.get_kpi(kpi_id=1),
-            services.get_kpi(kpi_id=2),
-            services.get_kpi(kpi_id=3),
+            services.get_kpi(id=1),
+            services.get_kpi(id=2),
+            services.get_kpi(id=3),
         ]
     }
 

@@ -45,7 +45,7 @@ def register_extensions(app):
 def register_blueprints(app):
     from importlib import import_module
 
-    for module_name in ["core", "dashboard", "test"]:
+    for module_name in ["core", "dashboard"]:
         module = import_module(f"app.{module_name}.routes")
         app.register_blueprint(module.bp)
 

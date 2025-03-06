@@ -1,6 +1,5 @@
 from flask import Blueprint
 
-
 bp = Blueprint(
     "dashboard",
     __name__,
@@ -13,6 +12,3 @@ from . import filters
 from . import models
 from . import routes
 from . import scripts
-
-
-

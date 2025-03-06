@@ -8,4 +8,4 @@ def task_enqueue():
 
     with scheduler.app.app_context():
         app.logger.debug("Scheduled KPI update ...")
-        app.task_queue.enqueue("app.dashboard.tasks.kpi_update", 1)
+        app.task_queue.enqueue("app.dashboard.tasks.kpi_update")
