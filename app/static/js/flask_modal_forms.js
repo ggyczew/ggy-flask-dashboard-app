@@ -9,7 +9,7 @@ https://github.com/trco/django-bootstrap-modal-forms
 /* 
 Modified and Simplified version for use with Flask
 version 1.0.0
-Copyright (c) 2021 Grzegorz GYczew
+Copyright (c) 2021 Grzegorz Gyczew
 */ 
 
 /*

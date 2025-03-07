@@ -1,0 +1,78 @@
+{% extends 'modal_base.html' if is_xhr else 'base.html' %}
+
+{% block content %}
+<div class="card-body">
+    <canvas id="kpiChart"></canvas>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        function renderChart() {
+            const ctx = document.getElementById("kpiChart").getContext("2d");
+            if (!ctx) {
+                console.error("Canvas not found!");
+                return;
+            }
+
+            // Extract data from context
+            const labels = [{% for kpi_value in context.kpi_values %}"{{ kpi_value.created_at.strftime('%Y-%m-%d %H:%M') }}",{% endfor %}];
+            const values = [{% for kpi_value in context.kpi_values %}{{ kpi_value.value }},{% endfor %}];
+            const targets = [{% for kpi_value in context.kpi_values %}{{ kpi_value.target }},{% endfor %}];
+
+            if (!labels.length || !values.length) {
+                console.warn("No data available for the chart.");
+                return;
+            }
+
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Actual Value",
+                            data: values,
+                            borderColor: "blue",
+                            backgroundColor: "rgba(0, 0, 255, 0.2)",
+                            borderWidth: 2,
+                            fill: true
+                        },
+                        {
+                            label: "Target",
+                            data: targets,
+                            borderColor: "red",
+                            backgroundColor: "rgba(255, 0, 0, 0.2)",
+                            borderWidth: 2,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Date & Time"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Value"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render the chart when the modal is fully shown
+        // $('.modal').on('shown.bs.modal', function () {
+        //     renderChart();
+        // });
+        setTimeout(renderChart, 300);
+    });
+</script>
+{% endblock %}

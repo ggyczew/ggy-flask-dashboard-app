@@ -6,9 +6,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=rpt
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: docker
     ports:
       - 5482:5432
     healthcheck:
@@ -19,15 +19,17 @@ services:
   redis:
     image: redis
     restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
   
   oracle:
     image: oracleinanutshell/oracle-xe-11g
     restart: always
     ports:
       - 1521:1521  # Oracle listener port
-      # - 8080:8080  # Oracle Application Express (APEX) port (optional)
-    # networks: 
-    #   - ggy-dash-app
     environment:
       ORACLE_ALLOW_REMOTE: "true"  # Allow remote connections
       ORACLE_PASSWORD: oracle  # Password for SYS and SYSTEM users
@@ -47,20 +49,28 @@ services:
       ORACLE_PASSWORD: oracle  # Default password
       ORACLE_SID: xe  # Oracle SID for XE
     depends_on:
-     
+      redis: 
+        condition: service_healthy
       postgres: 
         condition: service_healthy
-      # oracle:
-    # volumes:
-    #   - reports_data:/app/reports/
+      oracle: 
+        condition: service_started
     command: bash -c "flask commands init_users && gunicorn -b :5000 run:app"
 
   rq-worker:
     image: ggy-flask-dashboard-app
     restart: always
     depends_on:
-      - redis
+      redis: 
+        condition: service_healthy
+      postgres: 
+        condition: service_healthy
     command: rq worker app-tasks --url redis://redis:6379/0
+    healthcheck:
+      test: ["CMD", "bash", "-c", "rq info --url redis://redis:6379/0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   rq-dashboard:
     image: ggy-flask-dashboard-app
@@ -68,12 +78,20 @@ services:
     ports:
       - 5555:5555
     depends_on:
-      - redis
+      redis: 
+        condition: service_healthy
+      postgres: 
+        condition: service_healthy
     command: rq-dashboard --port 5555 --redis-url redis://redis:6379/0
-  
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+ 
  
 volumes:
   postgres_data:
   oracle_data:
-  # reports_data:
+
 

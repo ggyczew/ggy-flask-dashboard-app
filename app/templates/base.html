@@ -48,6 +48,9 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
 
+    <!-- Charts.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"        
+        crossorigin="anonymous"></script>
 
     <!-- Custom styles for this app -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
@@ -87,7 +90,7 @@
 
         <div class="modal fade" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalLabel">{% block modal_title %}{% endblock %}Modal title</h5>

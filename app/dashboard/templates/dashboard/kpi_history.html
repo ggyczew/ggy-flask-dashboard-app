@@ -1,0 +1,26 @@
+{% extends 'modal_base.html' if is_xhr else 'base.html' %}
+
+{% block content %}
+<div class="card-body">
+    <table id="main_table" class="table table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Value</th>
+                <th scope="col">Target</th>
+                <th scope="col">Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for kpi_value in context.kpi_values %}
+        <tr>
+            <td style="white-space: nowrap; width:1%">{{ kpi_value.id }}</td>
+            <td>{{ '{0:0.2f}'.format(kpi_value.value) }}</td>
+            <td>{{ '{0:0.2f}'.format(kpi_value.target) }}</td>
+            <td>{{ kpi_value.created_at | format_datetime }}</td>
+        </tr>    
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

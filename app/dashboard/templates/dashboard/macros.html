@@ -13,7 +13,9 @@
           <i class="{{ kpi.icon }}"></i>
         </div>
         <h2 class="card-title mb-3">{{ '{0:0.2f}'.format(kpi.current_value.value) }}</h2>
-        <p class="card-text text-muted">{{ kpi.name }}</p>
+        <p class="card-text text-muted">{{ kpi.title }}</p>
+        <a class="modal-view link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-pencil-fill"></i></a>
+        <a class="modal-view link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}?chart=true" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-pencil-fill"></i></a>
       </div>
     </div>
   </div>
