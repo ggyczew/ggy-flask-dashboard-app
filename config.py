@@ -46,9 +46,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL", "sqlite:///" + os.path.join(basedir, "app.sqlite")
-    )
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_BINDS = {
         "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),
         "oracle": os.getenv("ORACLE_DATABASE_URL"),
@@ -56,22 +54,12 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    DEBUG = True
-    LOGGING_LEVEL = logging.DEBUG
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.sqlite")
-    SQLALCHEMY_BINDS = {
-        "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),
-        "oracle": os.getenv("ORACLE_DATABASE_URL"),
-    }
-
-
-class DevelopmentFDTConfig(Config):
     SHOW_FLASK_DEBUG_TOOLBAR = True
     DEBUG = True
     LOGGING_LEVEL = logging.DEBUG
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.sqlite")
     SQLALCHEMY_BINDS = {
-        "datasource": "sqlite:///" + os.path.join(basedir, "data.sqlite"),
+        "datasource": "sqlite:///" + os.path.join(basedir, "data", "data.sqlite"),
         "oracle": os.getenv("ORACLE_DATABASE_URL"),
     }
 
@@ -88,7 +76,6 @@ class TestingConfig(Config):
 config = {
     "production": ProductionConfig,
     "development": DevelopmentConfig,
-    "developmentFDT": DevelopmentFDTConfig,
     "testing": TestingConfig,
-    "default": DevelopmentFDTConfig,
+    "default": ProductionConfig,
 }

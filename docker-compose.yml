@@ -9,6 +9,12 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=rpt
+    ports:
+      - 5482:5432
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "docker"]
+        timeout: 20s
+        retries: 10
   
   redis:
     image: redis
@@ -41,8 +47,10 @@ services:
       ORACLE_PASSWORD: oracle  # Default password
       ORACLE_SID: xe  # Oracle SID for XE
     depends_on:
-      - postgres
-      - oracle
+     
+      postgres: 
+        condition: service_healthy
+      # oracle:
     # volumes:
     #   - reports_data:/app/reports/
     command: bash -c "flask commands init_users && gunicorn -b :5000 run:app"

@@ -4,9 +4,9 @@ import random
 
 def add_test_kpi():
     test_kpis = [
-        Kpi(name="Revenue", description="Total revenue generated", unit="$", icon="revenue_icon.png"),
-        Kpi(name="Customer Satisfaction", description="Customer satisfaction score", unit="%", icon="satisfaction_icon.png"),
-        Kpi(name="Employee Productivity", description="Average tasks completed per employee", unit="tasks", icon="productivity_icon.png")
+        Kpi(name="Revenue", title="Revenue", description="Total revenue generated", unit="$", icon="revenue_icon.png"),
+        Kpi(name="Customer Satisfaction", title="Customer Satisfaction", description="Customer satisfaction score", unit="%", icon="satisfaction_icon.png"),
+        Kpi(name="Employee Productivity", title="Employee Productivity", description="Average tasks completed per employee", unit="tasks", icon="productivity_icon.png")
     ]
     
     db.session.bulk_save_objects(test_kpis)
