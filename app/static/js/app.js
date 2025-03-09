@@ -68,4 +68,45 @@ $(function() {
     //     });
     // });
 
+
+
+    // Handles loading JSON chart data into a modal
+    $(".modal-chart").each(function () {
+        $(this).on("click", function (e) {
+            e.preventDefault();
+            const modalURL = $(this).data("url")
+            const modalTitle = $(this).data("modal-title");
+            const modalID = "#modal"; // Change this to your actual modal ID
+            const modalBody = $(modalID).find(".modal-body");
+
+            // Open the modal
+            $(modalID).modal("show");
+            $(modalID).find(".modal-title").text(modalTitle);
+
+            // Show loading indicator
+            modalBody.html('<div class="text-center p-3"><i class="fas fa-spinner fa-spin fa-2x"></i> Loading chart...</div>');
+
+            // Load chart JSON data via AJAX
+            $.ajax({
+                url: modalURL,
+                method: "GET",
+                dataType: "json",
+            }).done(function (chartConfig) {
+                modalBody.html('<canvas id="chartCanvas"></canvas>');
+
+                const ctx = document.getElementById("chartCanvas").getContext("2d");
+
+                // Destroy any existing Chart.js instance before creating a new one
+                if (window.chartInstance) {
+                    window.chartInstance.destroy();
+                }
+
+                // Create new Chart.js instance with the received config
+                window.chartInstance = new Chart(ctx, chartConfig);
+            }).fail(function () {
+                modalBody.html('<div class="alert alert-danger">Error loading chart data. Please try again.</div>');
+            });
+        });
+    });
+
 });
