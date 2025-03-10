@@ -5,18 +5,63 @@
 </div>
 {% endmacro %}
 
-{% macro render_kpi_style_2(kpi) %}
+{% macro render_kpi_style_1(kpi) %}
 <div class="col">
     <div class="card h-100 text-center shadow">
       <div class="card-body">
+        <a tabindex="0" data-bs-toggle="popover" data-bs-trigger="focus" title="{{ kpi.title }}" data-bs-content="{{ kpi.description }}"><i class="bi-info-circle"></i></a>
         <div class="display-4 text-primary mb-2">
           <i class="{{ kpi.icon }}"></i>
         </div>
         <h2 class="card-title mb-3">{{ '{0:0.2f}'.format(kpi.current_value.value) }}</h2>
         <p class="card-text text-muted">{{ kpi.title }}</p>
-        <a class="modal-view link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-pencil-fill"></i></a>
-        <a class="modal-chart link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}?chart=true" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-pencil-fill"></i></a>
+        <a class="modal-view link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-card-list"></i></a>
+        <a class="modal-chart link-success" data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}?chart=true" data-modal-title="KPI History - {{ kpi.title }}" title="KPI History - {{ kpi.title }}"><i class="bi-graph-up"></i></a>
       </div>
     </div>
   </div>
 {% endmacro %}
+
+
+{% macro render_kpi_style_2(kpi) %}
+<div class="col">
+    <div class="card h-100 text-center shadow position-relative">
+        <div class="card-body">
+            <!-- Top-left modal links -->
+            <div class="position-absolute top-0 start-0 m-2">
+                <a class="modal-view link-success me-2" 
+                   data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}" 
+                   data-modal-title="KPI History - {{ kpi.title }}" 
+                   title="KPI History - {{ kpi.title }}">
+                    <i class="bi-card-list"></i>
+                </a>
+                <a class="modal-chart link-success" 
+                   data-url="{{ url_for('dashboard.kpi_history', kpi_id=kpi.id) }}?chart=1" 
+                   data-modal-title="KPI History - {{ kpi.title }}" 
+                   title="KPI History - {{ kpi.title }}">
+                    <i class="bi-graph-up"></i>
+                </a>
+            </div>
+
+            <!-- Top-right popover -->
+            <div class="position-absolute top-0 end-0 m-2">
+                <a tabindex="0" class="btn btn-default" data-bs-toggle="popover" data-bs-trigger="focus" 
+                   title="{{ kpi.title }}" data-bs-content="{{ kpi.description }}">
+                    <i class="bi-info-circle"></i>
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
+                  Popover on top
+                </button>
+            </div>
+
+            <!-- KPI Content -->
+            <div class="display-4 text-primary mb-2">
+                <i class="{{ kpi.icon }}"></i>
+            </div>
+            <h2 class="card-title mb-3">{{ '{0:0.2f}'.format(kpi.current_value.value) }}</h2>
+            <p class="card-text text-muted">{{ kpi.title }}</p>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+

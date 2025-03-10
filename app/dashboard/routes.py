@@ -44,7 +44,7 @@ def kpi_history(kpi_id):
     kpi = services.get_kpi(id=kpi_id)
     kpi_values = models.KpiValue.query.filter_by(kpi_id=kpi_id).all()
 
-    if request.args.get("chart", "false").lower() == "true":
+    if request.args.get("chart", "0") == "1":
         chart_config = {'X': 'Y'}
         chart_config = {
             "type": "line",  # Chart type (changeable)
